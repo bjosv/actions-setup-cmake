@@ -9,6 +9,10 @@ async function run() {
       requested_version === 'latest' ? '' : requested_version;
     const api_token = core.getInput('github-api-token');
     const all_version_info = await version.getAllVersionInfo(api_token);
+    core.debug(`>> run`);
+    core.debug(`>> version: ${required_version}`);
+    core.debug(`>> version_list: ${all_version_info}`);
+
     const chosen_version_info = version.getLatestMatching(
       required_version,
       all_version_info

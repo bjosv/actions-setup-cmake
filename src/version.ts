@@ -77,6 +77,7 @@ function convertToVersionInfo(versions: GitHubVersion[]): vi.VersionInfo[] {
   versions.map((v) => {
     const sv_version = semver.coerce(v.tag_name);
     if (sv_version) {
+      core.debug(`>> convertToVersionInfo tag_name: ${v.tag_name}`);
       const assets = v.assets.map((a) => ({
         name: a.name,
         platform: extractPlatformFrom(a.name),
@@ -91,6 +92,8 @@ function convertToVersionInfo(versions: GitHubVersion[]): vi.VersionInfo[] {
         draft: v.draft,
         prerelease: v.prerelease,
       });
+    } else {
+          core.debug(`>> convertToVersionInfo tag_name: ${v.tag_name} NOT ok!`);
     }
   });
   return result;
@@ -179,6 +182,7 @@ export async function getAllVersionInfo(
   }
   core.debug(`overall got ${raw_versions.length} versions`);
   const versions: vi.VersionInfo[] = convertToVersionInfo(raw_versions);
+  core.debug(`formed into ${versions.length} versions`);
   return versions;
 }
 
